@@ -1,0 +1,47 @@
+<div id="newRoom">
+  
+  <fieldset>
+	<legend>Stwórz nowy pokój</legend>
+<%= form_for(@new_room) do |f| %>
+	Nazwa pokoju <%= f.text_field :name %><br/><br/>
+	Czy ma być publiczny?<%= f.check_box :public %><br/><br/>
+
+	<%= f.submit %>
+<% end %>
+</fieldset>
+</div>
+<% if current_user.admin?%>
+ <h1>admin lolol xd</h1>
+<% end %>
+
+
+
+
+
+<h1>Liczba userow <%= @ta %></h1>
+<fieldset>
+  <legend>Istniejące pokoje</legend>
+  <table cellpadding="2" cellspacing="5">
+    <tr>
+      <th>Nazwa</th>
+      <th>Liczba użytkowników</th>
+      <th>Utworzony</th>
+      <% if current_user.admin?%>
+          <th>Usuń</th>
+      <% end %>
+    </tr>
+
+    <% @rooms.each do |room| %>
+      <tr>
+        <td align="center" width="300px"><a href="/party/<%= room.id %>"><%= room.name %></a></td>
+        <td> <%= room.users.count%>  </td>
+        <td><%= room.created_at %></td>
+        <% if current_user.admin?%>
+            <td><%= link_to 'Usuń', room, method: :delete, data: { confirm: 'Napewno?' } %></td>
+        <% end %>
+
+
+      </tr>
+    <% end %>
+  </table>
+</fieldset>
