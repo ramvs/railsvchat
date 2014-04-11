@@ -42,7 +42,9 @@ var session = OT.initSession(apiKey, sessionId);
   });
  
   session.connect(token, function(error) {
-    var publisher = OT.initPublisher();
+    // var publisherProperties = {resolution: "1280x720"};
+    var publisher = OT.initPublisher("videobox",
+      {width:400, height:300}, {name: "<%=@sheets%>"});
     session.publish(publisher);
   });
 </script>

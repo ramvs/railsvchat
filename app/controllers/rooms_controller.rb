@@ -70,7 +70,10 @@ end
      user_in_room = User.find(sheets)
      user_in_room.room_id = current_room.id
      user_in_room.save
-   else
+     
+   elsif current_user.admin?
+  role = OpenTok::RoleConstants::MODERATOR
+else
      redirect_to new_user_session_path, notice: 'You are not logged in.'
    end
 
