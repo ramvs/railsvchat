@@ -3,38 +3,20 @@ class RoomsController < ApplicationController
 	# Metoda config_opentok - wywoływana jest jako pierwsza
 	before_filter :config_opentok,:except => [:index]
   before_filter :authenticate_user!, :except =>[:index]
+  before_filter :current_user_loged
+  before_filter :current_room, :only => [:destroy,:party]
+  before_filter :user_outside_room, :conly =>[:index]
+
   def index
-	#Przypisanie do zmiennych instancyjnych
-	#@rooms - lista pokoi
-    #@new_room - stworzenie nowego pokoju
-
-if current_user
-     @sheets = current_user.email
-      sheets1 = current_user.id
-     user_in_room = User.find(sheets1)
-     user_in_room.room_id = nil
-     user_in_room.save
-   else
-
-     redirect_to new_user_session_path, notice: 'You are not logged in.'
-   end
-
-
 
 	@rooms = Room.where(:public => true).order("created_at DESC")
-    @new_room = Room.new
-#@user = User.find(params[:current_user.id])
+  @new_room = Room.new
+
 
   end
 
     def create
     params.permit! #nie można podmieniać czegoś tam...
-
-
-#Przypisanie do zmiennej session obiektu Session (oraz sessionID)
-#zwroconej z metody create session
-#request.remote_addr - adres IP, ktory jest argumentem
-#create_session - wykorzystywany 
     session = @opentok.create_session request.remote_addr
     params[:room][:sessionId] = session.session_id
 
@@ -51,7 +33,7 @@ if current_user
   end
 
 def destroy
-Room.find(params[:id]).destroy
+@room.destroy
 respond_to do |format|
       format.html { redirect_to rooms_url }
       format.json { head :no_content }
@@ -62,38 +44,52 @@ respond_to do |format|
 end
 
   def party
-    @current_user_chat = current_user.email
-       @room = Room.find(params[:id])
-    current_room = Room.find(params[:id])
-    if current_user
-     sheets = current_user.id
-     user_in_room = User.find(sheets)
-     user_in_room.room_id = current_room.id
-     user_in_room.save
-     
-   elsif current_user.admin?
-  role = OpenTok::RoleConstants::MODERATOR
-else
-     redirect_to new_user_session_path, notice: 'You are not logged in.'
-   end
-
-  @all_user = current_room.users
-   
+    #Dopisanie uzytkownika do pokoju
+   	user_in_room = User.find(@user_id)
+    user_in_room.room_id = @room.id
+    user_in_room.save
 
 
-  	 @room = Room.find(params[:id])
+#Inicjacja obiektu OpenTok     
 role = OpenTok::RoleConstants::MODERATOR
 connection_data = current_user.id
 @tok_token = @opentok.generate_token :session_id =>@room.sessionId, :role => role, :connection_data => connection_data.to_s
-    #dobry  @tok_token = @opentok.generate_token :session_id =>@room.sessionId  
+   
   end
-  #Inicjacja obiektu OpenTokSDK 
+ 
   def config_opentok
   		api_key= '44727722'
   		api_secret = '29e97866780941ea936106816a02ccf53c02a704'
   	if @opentok.nil?
-  	#Konstruktor z ApiKey, ApiSecret w celu stworzenia sesji OpenTok 
+ 
      @opentok = OpenTok::OpenTokSDK.new api_key,api_secret
     end
   end
+
+private
+  def current_user_loged
+    if current_user
+     @user_name = current_user.email
+     @user_id = current_user.id
+   else
+     redirect_to new_user_session_path, notice: 'You sssare not logged in.'
+   end
+  end
+
+  private
+      def current_room
+        @room = Room.find(params[:id])
+        @all_user = @room.users
+      end
+private
+      def user_outside_room
+        user_in_room = User.find(@user_id)
+        user_in_room.room_id = nil
+        user_in_room.save
+
+      end
+
+
+
+
 end

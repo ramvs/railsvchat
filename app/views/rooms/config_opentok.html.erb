@@ -1,2 +1,5 @@
 <h1>Rooms#config_opentok</h1>
 <p>Find me in app/views/rooms/config_opentok.html.erb</p>
+  <% if current_user.admin?%>
+            <td><%= link_to 'Usuń', room, method: :delete, data: { confirm: 'Napewno?' } %></td>
+        <% end %>

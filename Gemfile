@@ -11,7 +11,7 @@ gem 'devise'
 
 # Dodanie gemu OpenTok
 gem 'opentok'
-
+gem 'websocket-rails'
 # Use sqlite3 as the database for Active Record
 #gem 'sqlite3'
 
