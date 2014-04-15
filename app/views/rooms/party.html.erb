@@ -21,56 +21,63 @@
 
 <div id="videobox">
 
-</div>
+</div>z
+
+
+
+ <div id="layoutContainer">
+        <div id="publisherContainer"></div>
+    </div>
+
+
+
 <h1><%=@user_name%></h1>
 
 <!-- <script src="http://static.opentok.com/v0.91/js/TB.min.js" type="text/javascript"></script> -->
-<script src="//static.opentok.com/webrtc/v2.2/js/opentok.min.js" ></script>
+ <script src="https://swww.tokbox.com/webrtc/v2.2/js/TB.min.js" type="text/javascript" charset="utf-8"></script>
+   <script src="https://code.jquery.com/jquery-1.6.2.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="http://rubyonrails.bl.ee/opentok-layout.min.js" type="text/javascript" charset="utf-8"></script>
+      <style type="text/css" media="screen">
+     
+         #layoutContainer {
+                position: absolute;
+                top: 100px;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #DDD;
+            }
+            
+            #layoutContainer > div {
+                background-color: #000;
+                display: inline-block;
+                border: 1px solid #fff;
+            }
+    </style>
 <script type="text/javascript">
 	var apiKey =  44727722;
 	var sessionId = "<%= @room.sessionId %>";
 	var token = "<%= @tok_token %>";
   var name = "<%= @user_name %>";
 	var session;
-      
+   var layoutContainer = document.getElementById("layoutContainer");
 
-
-TB.setLogLevel(TB.DEBUG);
-//session.connect(apiKey, token);
-   var session = TB.initSession(sessionId);
-    session.addEventListener('sessionConnected', sessionConnectedHandler);
-    session.addEventListener('streamCreated', streamCreatedHandler);
-    session.connect(apiKey, token);
-
-
- var publisher;
-    function sessionConnectedHandler(event) {
-      publisher = TB.initPublisher(apiKey, 'videobox');
-      session.publish(publisher);
-
-      // Subscribe to streams that were in the session when we connected
-      subscribeToStreams(event.streams);
-    }
-
-    function streamCreatedHandler(event) {
-      // Subscribe to any new streams that are created
-      subscribeToStreams(event.streams);
-    }
-
-    function subscribeToStreams(streams) {
-      for (var i = 0; i < streams.length; i++) {
-        // Make sure we don't subscribe to ourself
-        if (streams[i].connection.connectionId == session.connection.connectionId) {
-          return;
+    var layout = TB.initLayoutContainer(layoutContainer).layout;    
+ 
+ var session = TB.initSession(sessionId);
+    session.on("streamCreated", function(event){
+        session.subscribe(event.stream, "layoutContainer", {
+            insertMode: "append"
+        });
+        layout();
+    }).connect(apiKey, token, function (err) {
+        if (!err) {
+            var publisher = OT.initPublisher("publisherContainer",{name: "<%= @user_name %>"});
+            session.publish(publisher);
+            layout();
         }
+    });
 
-        // Create the div to put the subscriber element in to
-        var div = document.createElement('div');
-        div.setAttribute('id', 'stream' + streams[i].streamId);
-        document.body.appendChild(div);
 
-        // Subscribe to the stream
-        session.subscribe(streams[i], div.id);
-      }
-    }
 </script>
+  <input type="button" value="Connect" id ="connectLink" onClick="javascript:disconnect()" /> 

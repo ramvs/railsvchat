@@ -16,7 +16,7 @@ class RoomsController < ApplicationController
   end
 
     def create
-    params.permit! #nie można podmieniać czegoś tam...
+    params.permit! 
     session = @opentok.create_session request.remote_addr
     params[:room][:sessionId] = session.session_id
 
@@ -51,9 +51,9 @@ end
 
 
 #Inicjacja obiektu OpenTok     
-role = OpenTok::RoleConstants::MODERATOR
+# role = OpenTok::RoleConstants::MODERATOR
 connection_data = current_user.id
-@tok_token = @opentok.generate_token :session_id =>@room.sessionId, :role => role, :connection_data => connection_data.to_s
+@tok_token = @opentok.generate_token :session_id =>@room.sessionId,  :connection_data => connection_data.to_s
    
   end
  
