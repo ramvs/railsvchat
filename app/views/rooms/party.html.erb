@@ -77,7 +77,22 @@
             layout();
         }
     });
-
+var resizeTimeout;
+        window.onresize = function() {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(function () {
+            layout();
+          }, 20);
+        };
+        
+        $("#layoutContainer>*").live("dblclick", function () {
+            if ($(this).hasClass("OT_big")) {
+                $(this).removeClass("OT_big");
+            } else {
+                $(this).addClass("OT_big");
+            }
+            layout();
+        });
 
 </script>
   <input type="button" value="Connect" id ="connectLink" onClick="javascript:disconnect()" /> 
