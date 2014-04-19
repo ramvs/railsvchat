@@ -1,19 +1,25 @@
+<div class="row">
+            <div class="col-lg-4">
 <div class="well">
 <div id="newRoom">
-  
+  <p id="notice"><%= notice %></p>
   <fieldset>
 	<legend>Stwórz nowy pokój</legend>
+
+
 <%= form_for(@new_room) do |f| %>
+ <%= f.error_messages %>
 	Nazwa pokoju <%= f.text_field :name %><br/><br/>
 	Czy ma być publiczny?<%= f.check_box :public %><br/><br/>
 
 	<%= f.submit %>
 <% end %>
+
 </fieldset>
 </div>
 </div>
-
-
+</div>
+ <div class="col-lg-8">
 <div class="well">
 <fieldset>
   <legend>Istniejące pokoje</legend>
@@ -30,8 +36,8 @@
     <% @rooms.each do |room| %>
       <tr>
         <td align="center" width="300px"><a href="/party/<%= room.id %>"><%= room.name %></a></td>
-        <td> <%= room.users.count%>  </td>
-        <td><%= room.created_at %></td>
+        <td align="center" width="300px">  <%= room.users.count%>  </td>
+        <td align="center" width="300px"><%= room.created_at %></td>
    
             <td><%= link_to 'Usuń', room, method: :delete, data: { confirm: 'Napewno?' } %></td>
        
@@ -42,3 +48,39 @@
   </table>
 </fieldset>
 </div>
+</div>
+</div>
+<div class="well">
+<fieldset>
+  <legend>Uzytkownicy w pokojach</legend>
+<table class="table table-bordered table-condensed table-hover">
+<thead>
+    <tr>
+     <th>Nazwa pokoju</th>
+      <th>Nazwa uzytkownika</th>
+      <th>Usuń</th>
+
+    </tr>
+ </thead>
+ <tbody>
+    <% @all_users.each do |users| %>
+      <tr>
+         <td align="center" width="300px"> <%= Room.find(users.room_id).name%></td>
+        <td align="center" width="300px"><%= users.email %></td>
+        <td align="center" width="300px"> <%= users.room_id%>  </td>
+       
+   
+            
+       
+
+
+      </tr>
+    <% end %>
+ </tbody>
+</table>
+</fieldset>
+
+</div>
+
+
+

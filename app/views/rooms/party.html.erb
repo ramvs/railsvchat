@@ -1,39 +1,9 @@
-<!-- Wyświetlenie wszystkich użytkowników w pokoju -->
-<fieldset>
-  <legend>Użytkownicy w pokoju</legend>
-  <table cellpadding="2" cellspacing="5">
-    <tr>
-      <th>Email</th>
-      <th>Id</th>
-       </tr>
-
-    <% @all_user.each do |alluser| %>
-      <tr>
-        <td align="center" width="300px"><%= alluser.email %></a></td>
-        <td> <%= alluser.id%>  </td>
-        
-      </tr>
-    <% end %>
-  </table>
-</fieldset>
-
-<%= link_to 'Poczekalnia', rooms_path(@rooms) %>
-
-<div id="videobox">
-
-</div>z
-
-
 
  <div id="layoutContainer">
         <div id="publisherContainer"></div>
     </div>
 
 
-
-<h1><%=@user_name%></h1>
-
-<!-- <script src="http://static.opentok.com/v0.91/js/TB.min.js" type="text/javascript"></script> -->
  <script src="https://swww.tokbox.com/webrtc/v2.2/js/TB.min.js" type="text/javascript" charset="utf-8"></script>
    <script src="https://code.jquery.com/jquery-1.6.2.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="http://rubyonrails.bl.ee/opentok-layout.min.js" type="text/javascript" charset="utf-8"></script>
@@ -41,15 +11,15 @@
      
          #layoutContainer {
                 position: absolute;
-                top: 100px;
+                top: 90px;
                 left: 0;
                 right: 0;
                 bottom: 0;
-                background-color: #DDD;
+                background-color: #B02B2C;
             }
             
             #layoutContainer > div {
-                background-color: #000;
+                background-color: #B02B2C;
                 display: inline-block;
                 border: 1px solid #fff;
             }
@@ -72,7 +42,7 @@
         layout();
     }).connect(apiKey, token, function (err) {
         if (!err) {
-            var publisher = OT.initPublisher("publisherContainer",{name: "<%= @user_name %>"});
+            var publisher = OT.initPublisher("publisherContainer",{name: "<%= @user_name %>" });
             session.publish(publisher);
             layout();
         }
@@ -94,5 +64,9 @@ var resizeTimeout;
             layout();
         });
 
+
+
+
+
 </script>
-  <input type="button" value="Connect" id ="connectLink" onClick="javascript:disconnect()" /> 
+  <input type="button" value="Connect" id ="connectLink" onClick="javascript:signal()" /> 

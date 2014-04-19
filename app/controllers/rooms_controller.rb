@@ -8,17 +8,18 @@ class RoomsController < ApplicationController
   before_filter :user_outside_room, :conly =>[:index]
 
   def index
-
+  @all_users= User.where.not(:room_id => nil).order("room_id DESC")
 	@rooms = Room.where(:public => true).order("created_at DESC")
   @new_room = Room.new
-
-
-  end
+ 
+    end
 
     def create
     params.permit! 
     session = @opentok.create_session request.remote_addr
     params[:room][:sessionId] = session.session_id
+
+    # @test = Room.where(:name)
 
     @new_room = Room.new(params[:room])
 
@@ -51,9 +52,9 @@ end
 
 
 #Inicjacja obiektu OpenTok     
-# role = OpenTok::RoleConstants::MODERATOR
+role = OpenTok::RoleConstants::MODERATOR
 connection_data = current_user.id
-@tok_token = @opentok.generate_token :session_id =>@room.sessionId,  :connection_data => connection_data.to_s
+@tok_token = @opentok.generate_token :session_id =>@room.sessionId,:role=>role, :connection_data => connection_data.to_s
    
   end
  
@@ -81,6 +82,12 @@ private
         @room = Room.find(params[:id])
         @all_user = @room.users
       end
+
+private
+      def all_rooms_with_users
+
+      end
+
 private
       def user_outside_room
         user_in_room = User.find(@user_id)

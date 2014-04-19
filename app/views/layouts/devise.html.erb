@@ -26,17 +26,16 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-      <a class="brand" href="index.html">
+      
+				<a class="brand" href="index.html">
                    <i style="padding-right:40px;" class="glyphicon glyphicon-facetime-video"></i>
                 </a>
-
-
+            
             </div>
-            <div style="font-size:40px;"> <%= link_to "RailsVChat", '#', id: "logo" %></div>
+            <div style="font-size:40px;"> <%= link_to "RailsVChat", '#', id: "logo" %></div> 
             <div class="collapse navbar-collapse MenuCollapse">
-               
+
                 <ul id="menu" class="nav navbar-nav navbar-right">
-                <li><%= link_to 'Poczekalnia', root_path%> </li>
         			<li id="logo"><%=@user_name%> </li>
                     <li id="io">
                     		<%if user_signed_in? %>
@@ -54,13 +53,15 @@
 </div>
 </div>
 
-      
+
 
 
 
 <%= yield %>
+
+
+
 <p id="notice"><%= notice %></p>
 </div>
-
 </body>
 </html>
