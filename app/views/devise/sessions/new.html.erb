@@ -12,11 +12,12 @@
   <%= f.check_box :remember_me %>
   <!-- <%= f.file_field :email %> -->
 <%= f.submit "Log In", class: "btn btn-success" %>
-<% end %>
+<% end %><br>
+<%= render "devise/shared/links" %>
+
 </div>
 
 
 
 
 
-<%= render "devise/shared/links" %>

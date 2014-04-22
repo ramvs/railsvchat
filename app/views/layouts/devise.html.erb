@@ -60,8 +60,12 @@
 <%= yield %>
 
 
-
-<p id="notice"><%= notice %></p>
+<% flash.each do |key, value| %>
+        <div class="<%= flash_class(key) %>">
+              <%= value %>
+        </div>
+  <% end %>
+<!-- <p id="notice"><%= notice %></p> -->
 </div>
 </body>
 </html>

@@ -2,24 +2,27 @@ class RoomsController < ApplicationController
 	#Dokumentacja OpenTok https://github.com/opentok/Opentok-Ruby-SDK/blob/master/doc/reference.md
 	# Metoda config_opentok - wywoływana jest jako pierwsza
 	before_filter :config_opentok,:except => [:index]
-  before_filter :authenticate_user!, :except =>[:index]
+  before_filter :authenticate_user!
   before_filter :current_user_loged
   before_filter :current_room, :only => [:destroy,:party]
-  before_filter :user_outside_room, :conly =>[:index]
+  before_filter :user_outside_room, :only =>[:index]
 
   def index
+  # Uzytkownicy w pokojach
   @all_users= User.where.not(:room_id => nil).order("room_id DESC")
+  # Publiczne pokoje
 	@rooms = Room.where(:public => true).order("created_at DESC")
+  # Tworzenie pokoju
   @new_room = Room.new
  
-    end
+  end
 
     def create
     params.permit! 
     session = @opentok.create_session request.remote_addr
     params[:room][:sessionId] = session.session_id
 
-    # @test = Room.where(:name)
+
 
     @new_room = Room.new(params[:room])
 
@@ -39,7 +42,7 @@ respond_to do |format|
       format.html { redirect_to rooms_url }
       format.json { head :no_content }
     end
-    flash[:success] = "User deleted."
+    flash[:success] = "Room deleted."
 
 
 end
@@ -73,7 +76,7 @@ private
      @user_name = current_user.email
      @user_id = current_user.id
    else
-     redirect_to new_user_session_path, notice: 'You sssare not logged in.'
+     redirect_to new_user_session_path, notice: 'Zostałeś wylogowany.'
    end
   end
 
@@ -81,6 +84,7 @@ private
       def current_room
         @room = Room.find(params[:id])
         @all_user = @room.users
+        @room_name = @room.name
       end
 
 private

@@ -1,4 +1,5 @@
-
+<!-- <div id="invitation">Witaj w kanale  <%=@room_name%> Zaproś znajomych do konferencji dzięląć się tym liniem http://localhost:3000/party/<%= @room.id %></div> -->
+<!-- <p><%=@room_name%></p> -->
  <div id="layoutContainer">
         <div id="publisherContainer"></div>
     </div>
@@ -11,7 +12,7 @@
      
          #layoutContainer {
                 position: absolute;
-                top: 90px;
+                top: 110px;
                 left: 0;
                 right: 0;
                 bottom: 0;
@@ -25,6 +26,24 @@
             }
     </style>
 <script type="text/javascript">
+
+////Jednokrotne przeladowanie strony////////////////
+ $(document).ready(function(){
+
+//Check if the current URL contains '#' 
+if(document.URL.indexOf("#")==-1)
+{
+// Set the URL to whatever it was plus "#".
+url = document.URL+"#";
+location = "#";
+
+//Reload the page
+location.reload(true);
+
+}
+});
+//////////////////////////////////////////////////
+
 	var apiKey =  44727722;
 	var sessionId = "<%= @room.sessionId %>";
 	var token = "<%= @tok_token %>";
@@ -69,4 +88,5 @@ var resizeTimeout;
 
 
 </script>
-  <input type="button" value="Connect" id ="connectLink" onClick="javascript:signal()" /> 
+<!--   <input type="button" value="Connect" id ="connectLink" onClick="javascript:signal()" /> 
+ -->
