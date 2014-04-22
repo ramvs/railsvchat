@@ -40,7 +40,7 @@
         <td align="center" width="300px">  <%= room.users.count%>  </td>
         <td align="center" width="300px"><%= room.created_at %></td>
    
-            <td><%= link_to 'Usuń', room, method: :delete, data: { confirm: 'Napewno?' } %></td>
+            <td><%= link_to 'Usuń', room, method: :delete, data: { confirm: 'Napewno?'} %></td>
        
 
 
@@ -53,13 +53,13 @@
 </div>
 <div class="well">
 <fieldset>
-  <legend>Uzytkownicy w pokojach</legend>
+  <legend>Użytkownicy w pokojach</legend>
 <table class="table table-bordered table-condensed table-hover">
 <thead>
     <tr>
      <th>Nazwa pokoju</th>
       <th>Nazwa uzytkownika</th>
-      <th>Usuń</th>
+      <th>ID pokoju</th>
 
     </tr>
  </thead>
