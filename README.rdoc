@@ -1,27 +1,31 @@
 == RailsVChat
 
-#1. Opis programu
+#1. Opis aplikacji
 
-Things you may want to cover:
+Aplikacja internetowa umożliwiająca przeprowadzenie wieloosobowej rozmowy audio-wizualnej w ramach przeglądarki internetowej.
+Wykorzystanie platformy OpenTok w celu zbudowania wideokonferencji oraz frameworka RoR w celu integracji całości.
 
-* Ruby version
+#2. Narzędzia
 
-* System dependencies
+* OpenTok – platforma umożliwiająca wdrażanie wideokonferencji dla aplikacji internetowych czy też mobilnych. Udostępniony gem umożliwia zarządzanie sesjami oraz ich obsługą.
+* PostgreSQL – baza danych użyta w celu integracji z Heroku.
+* Devise – narzędzie umożliwiające uwierzytelnienie użytkownika w aplikacji oraz udostępnia narzędzia związane z sesją użytkownika.
+* Bootstrap – framework frond-endowy zawierający gotowe szablony dla HTML oraz CSS ułatwiający tworzenie responsywnych witryn internetowych.
 
-* Configuration
+#3. Opis implementacji
 
-* Database creation
+Platforma OpenTok udostępnia narzędzia niezbędne do zbudowania połączenia audio-wizualnego. W tym celu udostępnia następujące funkcjonalności:
+* API key – identyfikuje konto w usłudze OpenTok
+* API secret – dodatkowa weryfikacja użytkownika w platformie OpenTok
+* Session ID – identyfikator pokoju, w którym odbywa się komunikacja
+* Token – jest to klucz który definiuje użytkownika przy dołączeniu się do pokoju
+Dzięki nim jest możliwe utworzenie obiektu w JavaScripcie (pokoju) w którym można uczestniczyć w video-czacie. Udostępniony jest również gem, dzięki któremu można zarządzać
+automatycznie wcześniej wymienionymi parametrami z poziomu aplikacji.
 
-* Database initialization
+# Implementacja od strony RoR zawiera następujące elementy:
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+* Dodawanie/usuwanie (publicznych/prywatnych) pokojów konferecji
+* Wyświetlanie publicznych pokojów wraz z listą użytkowników
+* Obsługa autentykacji za pomocą Devise
+* Obsługa wizualizacji rozmowy za pomocą dodatkowych funkcji JS
+* Dodanie prostego layoutu z wykorzystaniem Boostrap
